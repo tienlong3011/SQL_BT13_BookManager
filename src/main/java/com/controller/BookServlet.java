@@ -39,9 +39,24 @@ public class BookServlet extends HttpServlet {
             case "delete":
                 deleteBook(request,response);
                 break;
+            case "view":
+                showViewBook(request,response);
             default:
                 listBook(request, response);
                 break;
+        }
+    }
+
+    private void showViewBook(HttpServletRequest request, HttpServletResponse response) {
+        int id = Integer.parseInt(request.getParameter("id"));
+        Book book = bookService.selectById(id);
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher("book/view.jsp");
+        request.setAttribute("book",book);
+
+        try {
+            requestDispatcher.forward(request,response);
+        } catch (ServletException | IOException e) {
+            e.printStackTrace();
         }
     }
 
